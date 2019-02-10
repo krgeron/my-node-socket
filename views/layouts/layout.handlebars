@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello Bulma!</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<body>
+  <div class="container is-widescreen">
+    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+      <ul id="menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/images">Images</a></li>
+        <li><a href="/contact" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+    {{{body}}}
+  </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script>
+  function getElementById(str) {
+    try {
+        return window.document.getElementById(str);
+    } catch (er) {
+        console.log(er.message);
+    }
+  }
+
+  var socket = io('http://localhost:3000');
+  socket.on('connect', function () {
+      getElementById('heart').addEventListener('click', () => {
+        getElementById('column').classList.add('has-background-success');
+        socket.emit('heart', { enabled: 'true' });
+      });
+  });
+
+  socket.on('broadcast', function (data) {
+      getElementById('column').classList.add('has-background-success');
+      console.log(JSON.stringify(data));
+  });
+
+</script>
+
+</html>
